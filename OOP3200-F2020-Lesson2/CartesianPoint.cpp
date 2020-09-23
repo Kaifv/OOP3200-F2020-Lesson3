@@ -9,7 +9,7 @@
 // Class definition section
 
 // constructor for CartesianPoint
-CartesianPoint::CartesianPoint(const int x, const int y): myX(x), myY(y)
+CartesianPoint::CartesianPoint(const int x, const int y): m_x(x), m_y(y)
 {
 	//SetPoint(x, y);
 }
@@ -25,8 +25,8 @@ CartesianPoint::CartesianPoint(const CartesianPoint& point2)
 CartesianPoint CartesianPoint::operator+(const CartesianPoint& point2) const
 {
 	CartesianPoint tempPoint;
-	tempPoint.SetX(GetX() + point2.GetX());
-	tempPoint.SetY(GetY() + point2.GetY());
+	tempPoint.SetX((*this).GetX() + point2.GetX());
+	tempPoint.SetY((*this).GetY() + point2.GetY());
 
 	return tempPoint;
 }
@@ -34,10 +34,10 @@ CartesianPoint CartesianPoint::operator+(const CartesianPoint& point2) const
 double CartesianPoint::operator-(const CartesianPoint& point_to) const
 {
 	// difference between x values
-	const int xDelta = point_to.myX - myX;
+	const int xDelta = point_to.GetX() - m_x;
 
 	// difference between y values
-	const int yDelta = point_to.myY - myY;
+	const int yDelta = point_to.GetY() - m_y;
 
 	// return the formula (based on Pythagorean theorem)
 	return sqrt((xDelta * xDelta) + (yDelta * yDelta));
@@ -48,6 +48,13 @@ bool CartesianPoint::operator==(const CartesianPoint& other_point) const
 	return (GetX() == other_point.GetX()) && (GetY() == other_point.GetY());
 }
 
+CartesianPoint CartesianPoint::operator=(const CartesianPoint& newpoint)
+{
+	SetX(newpoint.GetX());
+	SetY(newpoint.GetY());
+	return *this;
+}
+
 void CartesianPoint::SetPoint(int x, int y)
 {
 	SetX(x);
@@ -56,22 +63,22 @@ void CartesianPoint::SetPoint(int x, int y)
 
 void CartesianPoint::SetX(int x)
 {
-	myX = x;
+	m_x = x;
 }
 
 void CartesianPoint::SetY(int y)
 {
-	myY = y;
+	m_y = y;
 }
 
 int CartesianPoint::GetX() const
 {
-	return myX;
+	return m_x;
 }
 
 int CartesianPoint::GetY() const
 {
-	return myY;
+	return m_y;
 }
 
 
@@ -82,7 +89,14 @@ int CartesianPoint::GetY() const
 */
 double CartesianPoint::GetDistanceTo(const CartesianPoint& point_to) const
 {
-	return 0;
+	// difference between x values
+	const int xDelta = point_to.GetX() - m_x;
+
+	// difference between y values
+	const int yDelta = point_to.GetY() - m_y;
+
+	// return the formula (based on Pythagorean theorem)
+	return sqrt((xDelta * xDelta) + (yDelta * yDelta));
 }
 
 /** ToString Method for CartesianPoint class
@@ -96,8 +110,23 @@ auto CartesianPoint::ToString() const -> std::string
 	std::stringstream strOut;
 
 	// build the string
-	strOut << "(" << myX << ", " << myY << ")";
+	strOut << "(" << m_x << ", " << m_y << ")";
 
 	// return the string
 	return strOut.str();
+}
+
+std::ostream& operator<<(std::ostream& out, const CartesianPoint point)
+{
+	out << point.ToString();
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, CartesianPoint point)
+{
+	in >> point.m_x;
+	in.ignore();
+	in >> point.m_y;
+
+	return in;
 }
