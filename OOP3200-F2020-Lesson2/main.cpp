@@ -7,8 +7,8 @@
  *	@studentID  100772820
 */
 
-#include <iostream> 		// cin, cout
 #include <iomanip>			// fixed, setprecision()
+#include <iostream> 		// cin, cout
 
 #include "CartesianPoint.h"
 #include "MyConsoleInput.h"// ConsoleInput::ReadInteger()
@@ -53,8 +53,9 @@ int main()
 
 		// Processing
 		// determine the distance between the two points
-		distance = origin.GetDistanceTo(destination);
-
+		//distance = origin.GetDistanceTo(destination);
+		distance = origin - destination;
+		
 		// Output 
 		// Show the points and the distance
 		cout << fixed << setprecision(3); // formatting
